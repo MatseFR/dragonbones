@@ -349,7 +349,7 @@ import dragonBones.enums.BoundingBoxType;
 	 */
 	private static function segmentIntersectsPolygon(
 		xA:Float, yA:Float, xB:Float, yB:Float,
-		vertices: Vector<Float>,
+		vertices: Array<Float>,
 		intersectionPointA: Point = null,
 		intersectionPointB: Point = null,
 		normalRadians: Point = null
@@ -548,7 +548,7 @@ import dragonBones.enums.BoundingBoxType;
 	 * 自定义多边形顶点。
 	 * @version DragonBones 5.0
 	 */
-	public var vertices: Vector<Float> = new Vector<Float>();
+	public var vertices:Array<Float> = new Array<Float>();
 	/**
 	 * @private
 	 */
@@ -567,8 +567,7 @@ import dragonBones.enums.BoundingBoxType;
 		y = 0.0;
 		width = 0.0;
 		height = 0.0;
-		vertices.fixed = false;
-		vertices.length = 0;
+		vertices.resize(0);
 	}
 	/**
 	 * @language zh_CN

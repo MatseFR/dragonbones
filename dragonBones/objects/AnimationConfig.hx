@@ -158,7 +158,7 @@ import dragonBones.core.BaseObject;
 	 * 骨骼遮罩。
 	 * @version DragonBones 5.0
 	 */
-	public var boneMask: Vector<String> = new Vector<String>();
+	public var boneMask: Array<String> = new Array<String>();
 	/**
 	 * @private
 	 */
@@ -192,7 +192,7 @@ import dragonBones.core.BaseObject;
 		name = null;
 		animationName = null;
 		group = null;
-		boneMask.length = 0;
+		boneMask.resize(0);
 	}
 	
 	public function clear():Void 
@@ -224,11 +224,10 @@ import dragonBones.core.BaseObject;
 		animationName = value.animationName;
 		group = value.group;
 		
-		boneMask.length = value.boneMask.length;
-		var l:UInt = boneMask.length;
+		var l:UInt = value.boneMask.length;
 		for (i in 0...l)
 		{
-			boneMask[i] = value.boneMask[i];
+			boneMask.push(value.boneMask[i]);
 		}
 	}
 	
@@ -252,7 +251,7 @@ import dragonBones.core.BaseObject;
 		
 		if (recursive) // Add recursive mixing.
 		{
-			var bones:Vector<Bone> = armature.getBones();
+			var bones:Array<Bone> = armature.getBones();
 			var l:UInt = bones.length;
 			var bone:Bone;
 			for (i in 0...l)
@@ -279,7 +278,7 @@ import dragonBones.core.BaseObject;
 			var currentBone:Bone = armature.getBone(name);
 			if (currentBone != null) 
 			{
-				var bones:Vector<Bone> = armature.getBones();
+				var bones:Array<Bone> = armature.getBones();
 				var l:UInt, bone:Bone;
 				if (boneMask.length > 0) // Remove recursive mixing.
 				{

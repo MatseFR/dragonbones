@@ -1,6 +1,7 @@
 ﻿package dragonBones.factories;
 
 import haxe.Timer;
+import openfl.utils.Object;
 
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -73,7 +74,7 @@ import dragonBones.textures.TextureData;
 	/** 
 	 * @private 
 	 */
-	private var _textureAtlasDataMap:Map<String, Vector<TextureAtlasData>> = new Map<String, Vector<TextureAtlasData>>();
+	private var _textureAtlasDataMap:Map<String, Array<TextureAtlasData>> = new Map<String, Array<TextureAtlasData>>();
 	/** 
 	 * @private 
 	 */
@@ -95,7 +96,7 @@ import dragonBones.textures.TextureData;
 		
 		if (_textureAtlasDataMap.exists(textureAtlasName))
 		{
-			var textureAtlasDataList:Vector<TextureAtlasData> = _textureAtlasDataMap[textureAtlasName];
+			var textureAtlasDataList:Array<TextureAtlasData> = _textureAtlasDataMap[textureAtlasName];
 			
 			var l:UInt = textureAtlasDataList.length;
 			for (i in 0...l)
@@ -186,7 +187,7 @@ import dragonBones.textures.TextureData;
 	 */
 	private function _buildBones(dataPackage:BuildArmaturePackage, armature:Armature):Void
 	{
-		var bones:Vector<BoneData> = dataPackage.armature.sortedBones;
+		var bones:Array<BoneData> = dataPackage.armature.sortedBones;
 		var l:UInt = bones.length;
 		var boneData:BoneData, bone:Bone;
 		for (i in 0...l)
@@ -219,7 +220,7 @@ import dragonBones.textures.TextureData;
 	{
 		var currentSkin:SkinData = dataPackage.skin;
 		var defaultSkin:SkinData = dataPackage.armature.defaultSkin;
-		var slotDisplayDataSetMap = new Map<String, SkinSlotData> ();
+		var slotDisplayDataSetMap = new Map<String, SkinSlotData>();
 		
 		for (skinSlotData in defaultSkin.slots)
 		{
@@ -234,7 +235,7 @@ import dragonBones.textures.TextureData;
 			}
 		}
 		
-		var slots:Vector<SlotData> = dataPackage.armature.sortedSlots;
+		var slots:Array<SlotData> = dataPackage.armature.sortedSlots;
 		var l:UInt = slots.length;
 		var slotData:SlotData, skinSlotData:SkinSlotData, slot:Slot;
 		for (i in 0...l)
@@ -266,15 +267,15 @@ import dragonBones.textures.TextureData;
 		
 		if (displayIndex >= 0) 
 		{
-			var displayList:Vector<Dynamic> = slot.displayList; // Copy.
+			var displayList:Array<Object> = slot.displayList; // Copy.
 			if (displayList.length <= displayIndex) 
 			{
-				displayList.length = displayIndex + 1;
+				displayList.resize(displayIndex + 1);
 			}
 			
 			if (slot._replacedDisplayDatas.length <= displayIndex) 
 			{
-				slot._replacedDisplayDatas.length = displayIndex + 1;
+				slot._replacedDisplayDatas.resize(displayIndex + 1);
 			}
 			
 			slot._replacedDisplayDatas[displayIndex] = displayData;
@@ -291,7 +292,7 @@ import dragonBones.textures.TextureData;
 					displayData.texture = _getTextureData(dataPackage.textureAtlasName != null ? dataPackage.textureAtlasName : dataPackage.dataName, displayData.path);
 				}
 				
-				var displayDatas:Vector<DisplayData> = slot.skinSlotData.displays;
+				var displayDatas:Array<DisplayData> = slot.skinSlotData.displays;
 				if (
 					displayData.mesh != null ||
 					(displayIndex < displayDatas.length && displayDatas[displayIndex].mesh != null)
@@ -517,7 +518,7 @@ import dragonBones.textures.TextureData;
 	 * @see dragonBones.textures.TextureAtlasData
 	 * @version DragonBones 3.0
 	 */
-	public function getTextureAtlasData(dragonBonesName:String):Vector<TextureAtlasData>
+	public function getTextureAtlasData(dragonBonesName:String):Array<TextureAtlasData>
 	{
 		return _textureAtlasDataMap[dragonBonesName];
 	}
@@ -539,14 +540,14 @@ import dragonBones.textures.TextureData;
 			if (dragonBonesName == null) dragonBonesName = data.name;
 			if (dragonBonesName != null)
 			{
-				var textureAtlasList:Vector<TextureAtlasData>;
+				var textureAtlasList:Array<TextureAtlasData>;
 				if (_textureAtlasDataMap.exists(dragonBonesName))
 				{
 					textureAtlasList = _textureAtlasDataMap[dragonBonesName];
 				}
 				else
 				{
-					textureAtlasList = new Vector<TextureAtlasData>();
+					textureAtlasList = new Array<TextureAtlasData>();
 					_textureAtlasDataMap[dragonBonesName] = textureAtlasList;
 				}
 				
@@ -578,7 +579,7 @@ import dragonBones.textures.TextureData;
 	 */
 	public function removeTextureAtlasData(dragonBonesName:String, disposeData:Bool = true):Void
 	{
-		var textureAtlasDataList:Vector<TextureAtlasData> = _textureAtlasDataMap[dragonBonesName];
+		var textureAtlasDataList:Array<TextureAtlasData> = _textureAtlasDataMap[dragonBonesName];
 		if (textureAtlasDataList != null)
 		{
 			if (disposeData)
@@ -606,24 +607,22 @@ import dragonBones.textures.TextureData;
 			{
 				_dragonBonesDataMap[k].returnToPool();
 			}
-			
-			_dragonBonesDataMap.remove(k);
 		}
+		_dragonBonesDataMap.clear();
 		
 		for (k in _textureAtlasDataMap.keys())
 		{
 			if (disposeData)
 			{
-				var textureAtlasDataList:Vector<TextureAtlasData> = _textureAtlasDataMap[k];
+				var textureAtlasDataList:Array<TextureAtlasData> = _textureAtlasDataMap[k];
 				var l:UInt = textureAtlasDataList.length;
 				for (i in 0...l)
 				{
 					textureAtlasDataList[i].returnToPool();
 				}
 			}
-			
-			_textureAtlasDataMap.remove(k);
 		}
+		_textureAtlasDataMap.clear();
 	}
 	/**
 	 * @language zh_CN
@@ -680,7 +679,7 @@ import dragonBones.textures.TextureData;
 			else
 			{
 				var animations = new Map<String, AnimationData>();
-				var animationName:String = null;
+				
 				for (animationName in toArmature.animation.animations.keys())
 				{
 					animations[animationName] = toArmature.animation.animations[animationName];
@@ -696,9 +695,9 @@ import dragonBones.textures.TextureData;
 			
 			if (dataPackage.skin != null)
 			{
-				var slots:Vector<Slot> = toArmature.getSlots();
+				var slots:Array<Slot> = toArmature.getSlots();
 				var l:UInt = slots.length;
-				var toSlot:Slot, toSlotDisplayList:Vector<Dynamic>, lA:UInt, toDisplayObject:Dynamic, displays:Vector<DisplayData>, fromDisplayData:DisplayData;
+				var toSlot:Slot, toSlotDisplayList:Array<Dynamic>, lA:UInt, toDisplayObject:Dynamic, displays:Array<DisplayData>, fromDisplayData:DisplayData;
 				for (i in 0...l)
 				{
 					toSlot = slots[i];

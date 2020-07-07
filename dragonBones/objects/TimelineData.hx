@@ -18,7 +18,7 @@ import dragonBones.core.DragonBones;
 	/**
 	 * @private
 	 */
-	private var frames:Vector<FrameData> = new Vector<FrameData>();
+	private var frames:Array<FrameData> = new Array<FrameData>();
 	/**
 	 * @private
 	 */
@@ -48,7 +48,6 @@ import dragonBones.core.DragonBones;
 			prevFrame = frame;
 		}
 		
-		frames.fixed = false;
-		frames.length = 0;
+		frames.resize(0);
 	}
 }

@@ -63,15 +63,15 @@ import openfl.Vector;
 	/**
 	 * @private
 	 */
-	private var cachedFrames:Vector<Bool> = new Vector<Bool>();
+	private var cachedFrames:Array<Bool> = new Array<Bool>();
 	/**
 	 * @private
 	 */
-	private var boneCachedFrameIndices:Map<String, Vector<Int>> = new Map<String, Vector<Int>>(); //Object<Vector<Float>>
+	private var boneCachedFrameIndices:Map<String, Array<Int>> = new Map<String, Array<Int>>(); //Object<Vector<Float>>
 	/**
 	 * @private
 	 */
-	private var slotCachedFrameIndices:Map<String, Vector<Int>> = new Map<String, Vector<Int>>(); //Object<Vector<Float>>
+	private var slotCachedFrameIndices:Map<String, Array<Int>> = new Map<String, Array<Int>>(); //Object<Vector<Float>>
 	/**
 	 * @private
 	 */
@@ -89,29 +89,24 @@ import openfl.Vector;
 		for (k in boneTimelines.keys())
 		{
 			boneTimelines[k].returnToPool();
-			boneTimelines.remove(k);
 		}
 		
 		for (k in slotTimelines.keys())
 		{
 			slotTimelines[k].returnToPool();
-			slotTimelines.remove(k);
 		}
 		
 		for (k in ffdTimelines.keys()) {
-			// for (kA in ffdTimelines[k].keys()) 
-			// {
-			// 	for (kB in ffdTimelines[k][kA].keys()) 
-			// 	{
-			// 		ffdTimelines[k][kA][kB].returnToPool();
-			// 	}
-			// }
-			
-			ffdTimelines.remove(k);
+			for (kA in ffdTimelines[k].keys()) 
+			{
+				for (kB in ffdTimelines[k][kA].keys()) 
+				{
+					ffdTimelines[k][kA][kB].returnToPool();
+				}
+				ffdTimelines[k][kA].clear();
+			}
+			ffdTimelines[k].clear();
 		}
-		
-		boneCachedFrameIndices = new Map();
-		slotCachedFrameIndices = new Map();
 		
 		if (zOrderTimeline != null) 
 		{
@@ -124,13 +119,12 @@ import openfl.Vector;
 		fadeInTime = 0.0;
 		cacheFrameRate = 0.0;
 		name = null;
-		//boneTimelines.clear();
-		//slotTimelines.clear();
-		//ffdTimelines.clear();
-		cachedFrames.fixed = false;
-		cachedFrames.length = 0;
-		//boneCachedFrameIndices.clear();
-		//boneCachedFrameIndices.clear();
+		boneTimelines.clear();
+		slotTimelines.clear();
+		ffdTimelines.clear();
+		cachedFrames.resize(0);
+		boneCachedFrameIndices.clear();
+		slotCachedFrameIndices.clear();
 		zOrderTimeline = null;
 	}
 	/**
@@ -145,18 +139,17 @@ import openfl.Vector;
 		
 		cacheFrameRate = Math.max(Math.ceil(frameRate * scale), 1.0);
 		var cacheFrameCount:UInt = Math.ceil(cacheFrameRate * duration) + 1; // uint
-		cachedFrames.length = cacheFrameCount;
-		cachedFrames.fixed = true;
+		cachedFrames.resize(cacheFrameCount);
 		
-		var indices:Vector<Int>, l:UInt;
+		var indices:Array<Int>, l:UInt;
 		
 		for (k in boneTimelines.keys()) 
 		{
-			indices = new Vector<Int>(cacheFrameCount, true);
-			l = indices.length;
+			indices = new Array<Int>();
+			l = cacheFrameCount;
 			for (i in 0...l)
 			{
-				indices[i] = -1;
+				indices.push(-1);
 			}
 			
 			boneCachedFrameIndices[k] = indices;
@@ -164,11 +157,11 @@ import openfl.Vector;
 		
 		for (k in slotTimelines.keys()) 
 		{
-			indices = new Vector<Int>(cacheFrameCount, true);
-			l = indices.length;
+			indices = new Array<Int>();
+			l = cacheFrameCount;
 			for (i in 0...l)
 			{
-				indices[i] = -1;
+				indices.push(-1);
 			}
 			
 			slotCachedFrameIndices[k] = indices;
@@ -261,14 +254,14 @@ import openfl.Vector;
 	/**
 	 * @private
 	 */
-	private function getBoneCachedFrameIndices(name: String): Vector<Int> 
+	private function getBoneCachedFrameIndices(name: String):Array<Int> 
 	{
 		return boneCachedFrameIndices[name];
 	}
 	/**
 	 * @private
 	 */
-	private function getSlotCachedFrameIndices(name: String): Vector<Int> 
+	private function getSlotCachedFrameIndices(name: String):Array<Int> 
 	{
 		return slotCachedFrameIndices[name];
 	}

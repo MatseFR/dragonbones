@@ -10,7 +10,7 @@ import dragonBones.core.BaseObject;
  */
 @:allow(dragonBones) @:final class SkinSlotData extends BaseObject
 {
-	public var displays:Vector<DisplayData> = new Vector<DisplayData>();
+	public var displays:Array<DisplayData> = new Array<DisplayData>();
 	public var meshs:Map<String, MeshData> = new Map<String, MeshData>();
 	public var slot:SlotData;
 	
@@ -30,16 +30,14 @@ import dragonBones.core.BaseObject;
 		for (k in meshs.keys()) 
 		{
 			meshs[k].returnToPool();
-			meshs.remove(k);
 		}
 		
-		displays.fixed = false;
-		displays.length = 0;
-		//meshs.clear();
+		displays.resize(0);
+		meshs.clear();
 		slot = null;
 	}
 	
-	public function getDisplay(name: String): DisplayData 
+	public function getDisplay(name:String):DisplayData 
 	{
 		var l:UInt = displays.length;
 		var display:DisplayData;
@@ -55,7 +53,7 @@ import dragonBones.core.BaseObject;
 		return null;
 	}
 	
-	public function addMesh(value: MeshData):Void 
+	public function addMesh(value:MeshData):Void 
 	{
 		if (value != null && value.name != null && !meshs.exists(value.name)) 
 		{

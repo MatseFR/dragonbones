@@ -1,6 +1,4 @@
 package dragonBones.objects;
-
-import openfl.Vector;
 	
 /**
  * @private
@@ -8,8 +6,8 @@ import openfl.Vector;
 @:allow(dragonBones) @:final class AnimationFrameData extends FrameData
 {
 	
-	public var actions:Vector<ActionData> = new Vector<ActionData>();
-	public var events:Vector<EventData> = new Vector<EventData>();
+	public var actions:Array<ActionData> = new Array<ActionData>();
+	public var events:Array<EventData> = new Array<EventData>();
 	
 	@:keep private function new()
 	{
@@ -32,10 +30,7 @@ import openfl.Vector;
 			events[i].returnToPool();
 		}
 		
-		actions.fixed = false;
-		events.fixed = false;
-		
-		actions.length = 0;
-		events.length = 0;
+		actions.resize(0);
+		events.resize(0);
 	}
 }

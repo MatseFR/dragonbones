@@ -123,19 +123,19 @@ import dragonBones.objects.SlotTimelineData;
 	/**
 	 * @private
 	 */
-	private var _boneMask:Vector<String> = new Vector<String>();
+	private var _boneMask:Array<String> = new Array<String>();
 	/**
 	 * @private
 	 */
-	private var _boneTimelines:Vector<BoneTimelineState> = new Vector<BoneTimelineState>();
+	private var _boneTimelines:Array<BoneTimelineState> = new Array<BoneTimelineState>();
 	/**
 	 * @private
 	 */
-	private var _slotTimelines:Vector<SlotTimelineState> = new Vector<SlotTimelineState>();
+	private var _slotTimelines:Array<SlotTimelineState> = new Array<SlotTimelineState>();
 	/**
 	 * @private
 	 */
-	private var _ffdTimelines:Vector<FFDTimelineState> = new Vector<FFDTimelineState>();
+	private var _ffdTimelines:Array<FFDTimelineState> = new Array<FFDTimelineState>();
 	/**
 	 * @private
 	 */
@@ -213,14 +213,10 @@ import dragonBones.objects.SlotTimelineData;
 		_weightResult = 0.0;
 		_name = null;
 		_group = null;
-		_boneMask.fixed = false;
-		_boneMask.length = 0;
-		_boneTimelines.fixed = false;
-		_boneTimelines.length = 0;
-		_slotTimelines.fixed = false;
-		_slotTimelines.length = 0;
-		_ffdTimelines.fixed = false;
-		_ffdTimelines.length = 0;
+		_boneMask.resize(0);
+		_boneTimelines.resize(0);
+		_slotTimelines.resize(0);
+		_ffdTimelines.resize(0);
 		_animationData = null;
 		_armature = null;
 		_timeline = null;
@@ -334,14 +330,11 @@ import dragonBones.objects.SlotTimelineData;
 		
 		if (animationConfig.boneMask.length > 0) 
 		{
-			_boneMask.length = animationConfig.boneMask.length;
 			var l:UInt = _boneMask.length;
 			for (i in 0...l)
 			{
-				_boneMask[i] = animationConfig.boneMask[i];
+				_boneMask.push(animationConfig.boneMask[i]);
 			}
-			
-			_boneMask.fixed = true;
 		}
 		
 		_timeline = cast BaseObject.borrowObject(AnimationTimelineState);
@@ -360,10 +353,6 @@ import dragonBones.objects.SlotTimelineData;
 	 */
 	private function _updateTimelineStates():Void
 	{
-		_boneTimelines.fixed = false;
-		_slotTimelines.fixed = false;
-		_ffdTimelines.fixed = false;
-		
 		var boneTimelineStates = new Map<String, BoneTimelineState>();
 		var slotTimelineStates = new Map<String, SlotTimelineState>();
 		var ffdTimelineStates = new Map<String, FFDTimelineState>();
@@ -376,7 +365,7 @@ import dragonBones.objects.SlotTimelineData;
 			boneTimelineStates[boneTimelineState.bone.name] = boneTimelineState;
 		}
 		
-		var bones:Vector<Bone> = _armature.getBones();
+		var bones:Array<Bone> = _armature.getBones();
 		l = bones.length;
 		var bone:Bone, boneTimelineName:String, boneTimelineData:BoneTimelineData;
 		for (i in 0...l)
@@ -428,7 +417,7 @@ import dragonBones.objects.SlotTimelineData;
 			ffdTimelineStates[meshName] = ffdTimelineState;
 		}
 		
-		var slots:Vector<Slot> = _armature.getSlots();
+		var slots:Array<Slot> = _armature.getSlots();
 		l = slots.length;
 		var slot:Slot, slotTimelineName:String, parentTimelineName:String, resetFFDVertices:Bool, slotTimelineData:SlotTimelineData, ffdTimelineDatas:Map<String, FFDTimelineData>;
 		for (i in 0...l)
@@ -507,10 +496,6 @@ import dragonBones.objects.SlotTimelineData;
 			_ffdTimelines.splice(_ffdTimelines.indexOf(ffdTimelineState), 1);
 			ffdTimelineState.returnToPool();
 		}
-		
-		_boneTimelines.fixed = true;
-		_slotTimelines.fixed = true;
-		_ffdTimelines.fixed = true;
 	}
 	/**
 	 * @private
@@ -762,8 +747,6 @@ import dragonBones.objects.SlotTimelineData;
 			return;
 		}
 		
-		_boneMask.fixed = false;
-		
 		if (_boneMask.indexOf(name) < 0) // Add mixing
 		{
 			_boneMask.push(name);
@@ -771,7 +754,7 @@ import dragonBones.objects.SlotTimelineData;
 		
 		if (recursive) // Add recursive mixing.
 		{
-			var bones:Vector<Bone> = _armature.getBones();
+			var bones:Array<Bone> = _armature.getBones();
 			var l:UInt = bones.length;
 			var bone:Bone;
 			for (i in 0...l)
@@ -784,8 +767,6 @@ import dragonBones.objects.SlotTimelineData;
 			}
 		}
 		
-		_boneMask.fixed = true;
-		
 		_updateTimelineStates();
 	}
 	/**
@@ -797,8 +778,6 @@ import dragonBones.objects.SlotTimelineData;
 	 */
 	public function removeBoneMask(name:String, recursive:Bool = true):Void
 	{
-		_boneMask.fixed = false;
-		
 		var index:Int = _boneMask.indexOf(name);
 		if (index >= 0) // Remove mixing.
 		{
@@ -810,7 +789,7 @@ import dragonBones.objects.SlotTimelineData;
 			var currentBone:Bone = _armature.getBone(name);
 			if (currentBone != null) 
 			{
-				var bones:Vector<Bone> = _armature.getBones();
+				var bones:Array<Bone> = _armature.getBones();
 				var l:UInt = bones.length, bone:Bone;
 				if (_boneMask.length > 0) // Remove recursive mixing.
 				{
@@ -838,8 +817,6 @@ import dragonBones.objects.SlotTimelineData;
 			}
 		}
 		
-		_boneMask.fixed = true;
-		
 		_updateTimelineStates();
 	}
 	/**
@@ -849,9 +826,7 @@ import dragonBones.objects.SlotTimelineData;
 	 */
 	public function removeAllBoneMask():Void
 	{
-		_boneMask.fixed = false;
-		_boneMask.length = 0;
-		_boneMask.fixed = true;
+		_boneMask.resize(0);
 		
 		_updateTimelineStates();
 	}

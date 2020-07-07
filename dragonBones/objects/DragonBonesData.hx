@@ -43,13 +43,13 @@ import dragonBones.core.BaseObject;
 	/**
 	 * @private
 	 */
-	private var cachedFrames: Vector<Float> = new Vector<Float>();
+	private var cachedFrames:Array<Float> = new Array<Float>();
 	/**
 	 * @private
 	 */
 	private var userData: CustomData;
 	
-	private var _armatureNames:Vector<String> = new Vector<String>();
+	private var _armatureNames:Array<String> = new Array<String>();
 	/**
 	 * @private
 	 */
@@ -65,7 +65,6 @@ import dragonBones.core.BaseObject;
 		for (k in armatures.keys())
 		{
 			armatures[k].returnToPool();
-			armatures.remove(k);
 		}
 		
 		if (userData != null) 
@@ -76,11 +75,11 @@ import dragonBones.core.BaseObject;
 		autoSearch = false;
 		frameRate = 0;
 		name = null;
-		//armatures.clear();
-		cachedFrames.length = 0;
+		armatures.clear();
+		cachedFrames.resize(0);
 		userData = null;
 		
-		_armatureNames.length = 0;
+		_armatureNames.resize(0);
 	}
 	/**
 	 * @private
@@ -116,8 +115,8 @@ import dragonBones.core.BaseObject;
 	 * @see #armatures
 	 * @version DragonBones 3.0
 	 */
-	public var armatureNames(get, never):Vector<String>;
-	private function get_armatureNames():Vector<String>
+	public var armatureNames(get, never):Array<String>;
+	private function get_armatureNames():Array<String>
 	{
 		return _armatureNames;
 	}

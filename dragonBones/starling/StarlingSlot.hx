@@ -319,7 +319,7 @@ import starling.styles.MeshStyle;
 		var xG:Float = 0, yG:Float = 0;
 		if (_meshData.skinned)
 		{
-			var boneIndices:Vector<UInt>, boneVertices:Vector<Float>, weights:Vector<Float>, lB:UInt;
+			var boneIndices:Array<UInt>, boneVertices:Array<Float>, weights:Array<Float>, lB:UInt;
 			var bone:Bone, matrix:Matrix, weight:Float, xL:Float, yL:Float;
 			i = 0;
 			while (i < l)
@@ -366,7 +366,7 @@ import starling.styles.MeshStyle;
 		}
 		else if (hasFFD)
 		{
-			var vertices:Vector<Float> = _meshData.vertices;
+			var vertices:Array<Float> = _meshData.vertices;
 			i = 0;
 			while (i < l)
 			{

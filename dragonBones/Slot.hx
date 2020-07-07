@@ -119,23 +119,23 @@ import dragonBones.textures.TextureData;
 	/**
 	 * @private
 	 */
-	private var _ffdVertices:Vector<Float> = new Vector<Float>();
+	private var _ffdVertices:Array<Float> = new Array<Float>();
 	/**
 	 * @private
 	 */
-	private var _displayList:Vector<Object> = new Vector<Object>();
+	private var _displayList:Array<Object> = new Array<Object>();
 	/**
 	 * @private
 	 */
-	private var _textureDatas:Vector<TextureData> = new Vector<TextureData>();
+	private var _textureDatas:Array<TextureData> = new Array<TextureData>();
 	/**
 	 * @private
 	 */
-	private var _replacedDisplayDatas:Vector<DisplayData> = new Vector<DisplayData>();
+	private var _replacedDisplayDatas:Array<DisplayData> = new Array<DisplayData>();
 	/**
 	 * @private
 	 */
-	private var _meshBones:Vector<Bone> = new Vector<Bone>();
+	private var _meshBones:Array<Bone> = new Array<Bone>();
 	/**
 	 * @private
 	 */
@@ -179,7 +179,7 @@ import dragonBones.textures.TextureData;
 	/**
 	 * @private BoneTimelineState
 	 */
-	private var _cachedFrameIndices:Vector<Int>;
+	private var _cachedFrameIndices:Array<Int>;
 	/**
 	 * @private
 	 */
@@ -194,7 +194,7 @@ import dragonBones.textures.TextureData;
 	{
 		super._onClear();
 		
-		var disposeDisplayList:Vector<Object> = new Vector<Object>();
+		var disposeDisplayList:Array<Object> = new Array<Object>();
 		var l:UInt = _displayList.length;
 		var eachDisplay:Dynamic;
 		for (i in 0...l)
@@ -257,11 +257,11 @@ import dragonBones.textures.TextureData;
 		_colorTransform.redOffset = 0;
 		_colorTransform.greenOffset = 0;
 		_colorTransform.blueOffset = 0;
-		_ffdVertices.length = 0;
-		_displayList.length = 0;
-		_textureDatas.length = 0;
-		_replacedDisplayDatas.length = 0;
-		_meshBones.length = 0;
+		_ffdVertices.resize(0);
+		_displayList.resize(0);
+		_textureDatas.resize(0);
+		_replacedDisplayDatas.resize(0);
+		_meshBones.resize(0);
 		_skinSlotData = null;
 		_displayData = null;
 		_replacedDisplayData = null;
@@ -516,7 +516,7 @@ import dragonBones.textures.TextureData;
 						var l:UInt;
 						if (_meshData.skinned) 
 						{
-							_meshBones.length = _meshData.bones.length;
+							_meshBones.resize(_meshData.bones.length);
 							
 							l = _meshBones.length;
 							for (i in 0...l)
@@ -531,12 +531,12 @@ import dragonBones.textures.TextureData;
 								ffdVerticesCount += _meshData.boneIndices[i].length;
 							}
 							
-							_ffdVertices.length = ffdVerticesCount * 2;
+							_ffdVertices.resize(ffdVerticesCount * 2);
 						}
 						else 
 						{
-							_meshBones.length = 0;
-							_ffdVertices.length = _meshData.vertices.length;
+							_meshBones.resize(0);
+							_ffdVertices.resize(_meshData.vertices.length);
 						}
 						
 						l = _ffdVertices.length;
@@ -549,8 +549,8 @@ import dragonBones.textures.TextureData;
 					}
 					else 
 					{
-						_meshBones.length = 0;
-						_ffdVertices.length = 0;
+						_meshBones.resize(0);
+						_ffdVertices.resize(0);
 					}
 				}
 				else if (_textureData != prevTextureData)
@@ -564,8 +564,8 @@ import dragonBones.textures.TextureData;
 				_meshData = null;
 				_pivotX = 0.0;
 				_pivotY = 0.0;
-				_meshBones.length = 0;
-				_ffdVertices.length = 0;
+				_meshBones.resize(0);
+				_ffdVertices.resize(0);
 			}
 			
 			_displayDirty = true;
@@ -674,7 +674,7 @@ import dragonBones.textures.TextureData;
 						}
 					}
 					
-					var actions:Vector<ActionData> = _skinSlotData.slot.actions.length > 0? _skinSlotData.slot.actions: _childArmature.armatureData.actions;
+					var actions:Array<ActionData> = _skinSlotData.slot.actions.length > 0? _skinSlotData.slot.actions: _childArmature.armatureData.actions;
 					if (actions.length > 0) 
 					{
 						var l:UInt = actions.length;
@@ -740,7 +740,7 @@ import dragonBones.textures.TextureData;
 		_colorTransform.blueOffset = slotData.color.blueOffset;
 		_rawDisplay = rawDisplay;
 		_meshDisplay = meshDisplay;
-		_textureDatas.length = _skinSlotData.displays.length;
+		_textureDatas.resize(_skinSlotData.displays.length);
 		
 		_blendModeDirty = true;
 		_colorDirty = true;
@@ -911,13 +911,13 @@ import dragonBones.textures.TextureData;
 	/**
 	 * @private
 	 */
-	private function _setDisplayList(value:Vector<Object>):Bool
+	private function _setDisplayList(value:Array<Object>):Bool
 	{
 		if (value != null && value.length != 0)
 		{
 			if (_displayList.length != value.length)
 			{
-				_displayList.length = value.length;
+				_displayList.resize(value.length);
 			}
 			
 			var l:UInt = value.length;
@@ -936,7 +936,7 @@ import dragonBones.textures.TextureData;
 		}
 		else if (_displayList.length > 0)
 		{
-			_displayList.length = 0;
+			_displayList.resize(0);
 		}
 		
 		if (_displayIndex >= 0 && _displayIndex < _displayList.length)
@@ -1170,15 +1170,15 @@ import dragonBones.textures.TextureData;
 	 * 包含显示对象或子骨架的显示列表。
 	 * @version DragonBones 3.0
 	 */
-	public var displayList(get, set):Vector<Object>;
-	private function get_displayList():Vector<Object>
+	public var displayList(get, set):Array<Object>;
+	private function get_displayList():Array<Object>
 	{
-		return _displayList.concat();
+		return _displayList.copy();
 	}
-	private function set_displayList(value:Vector<Object>):Vector<Object>
+	private function set_displayList(value:Array<Object>):Array<Object>
 	{
-		var backupDisplayList:Vector<Object> = _displayList.concat();
-		var disposeDisplayList:Vector<Object> = new Vector<Object>();
+		var backupDisplayList:Array<Object> = _displayList.copy();
+		var disposeDisplayList:Array<Object> = new Array<Object>();
 		var eachDisplay:Dynamic;
 		
 		if (_setDisplayList(value))
@@ -1243,10 +1243,10 @@ import dragonBones.textures.TextureData;
 		}
 		else
 		{
-			var replaceDisplayList:Vector<Object> = displayList; // copy
+			var replaceDisplayList:Array<Object> = displayList; // copy
 			if (displayListLength <= _displayIndex)
 			{
-				replaceDisplayList.length = _displayIndex + 1;
+				replaceDisplayList.resize(_displayIndex + 1);
 			}
 			
 			replaceDisplayList[_displayIndex] = value;

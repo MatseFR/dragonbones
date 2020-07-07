@@ -34,7 +34,7 @@ import dragonBones.core.DragonBones;
 	 */
 	public var timeScale:Float = 1;
 	
-	private var _animatebles:Vector<IAnimateble> = new Vector<IAnimateble>();
+	private var _animatebles:Array<IAnimateble> = new Array<IAnimateble>();
 	private var __clock: WorldClock = null;
 	/**
 	 * @language zh_CN
@@ -118,7 +118,7 @@ import dragonBones.core.DragonBones;
 					}
 				}
 				
-				_animatebles.length = _animatebles.length - r;
+				_animatebles.resize(_animatebles.length - r);
 			}
 		}
 	}

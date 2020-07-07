@@ -24,7 +24,7 @@ import dragonBones.core.DragonBones;
 		result.y = kA * y1 + kB * y2 + kC * y3 + kD * y4;
 	}
 	
-	public static function samplingEasingCurve(curve:Array<Float>, samples:Vector<Float>):Void
+	public static function samplingEasingCurve(curve:Array<Float>, samples:Array<Float>):Void
 	{
 		var curveCount:Int = curve.length;
 		var result:Point = new Point();
@@ -72,7 +72,7 @@ import dragonBones.core.DragonBones;
 	}
 	
 	public var tweenEasing:Float;
-	public var curve:Vector<Float>;
+	public var curve:Array<Float>;
 	
 	private function new()
 	{

@@ -14,16 +14,16 @@ import dragonBones.core.BaseObject;
 	public var name:String;
 	public var slotPose:Matrix = new Matrix();
 	
-	public var uvs:Vector<Float> = new Vector<Float>(); // vertices * 2
-	public var vertices:Vector<Float> = new Vector<Float>(); // vertices * 2
-	public var vertexIndices:Vector<UInt> = new Vector<UInt>(); // triangles * 3
+	public var uvs:Array<Float> = new Array<Float>(); // vertices * 2
+	public var vertices:Array<Float> = new Array<Float>(); // vertices * 2
+	public var vertexIndices:Array<UInt> = new Array<UInt>(); // triangles * 3
 	
-	public var boneIndices:Vector<Vector<UInt>> = new Vector<Vector<UInt>>(); // vertices bones
-	public var weights:Vector<Vector<Float>> = new Vector<Vector<Float>>(); // vertices bones
-	public var boneVertices:Vector<Vector<Float>> = new Vector<Vector<Float>>(); // vertices bones * 2
+	public var boneIndices:Array<Array<UInt>> = new Array<Array<UInt>>(); // vertices bones
+	public var weights:Array<Array<Float>> = new Array<Array<Float>>(); // vertices bones
+	public var boneVertices:Array<Array<Float>> = new Array<Array<Float>>(); // vertices bones * 2
 	
-	public var bones:Vector<BoneData> = new Vector<BoneData>(); // bones
-	public var inverseBindPose:Vector<Matrix> = new Vector<Matrix>(); // bones
+	public var bones:Array<BoneData> = new Array<BoneData>(); // bones
+	public var inverseBindPose:Array<Matrix> = new Array<Matrix>(); // bones
 	
 	@:keep private function new()
 	{
@@ -35,21 +35,13 @@ import dragonBones.core.BaseObject;
 		skinned = false;
 		name = null;
 		slotPose.identity();
-		uvs.fixed = false;
-		uvs.length = 0;
-		vertices.fixed = false;
-		vertices.length = 0;
-		vertexIndices.fixed = false;
-		vertexIndices.length = 0;
-		boneIndices.fixed = false;
-		boneIndices.length = 0;
-		weights.fixed = false;
-		weights.length = 0;
-		boneVertices.fixed = false;
-		boneVertices.length = 0;
-		bones.fixed = false;
-		bones.length = 0;
-		inverseBindPose.fixed = false;
-		inverseBindPose.length = 0;
+		uvs.resize(0);
+		vertices.resize(0);
+		vertexIndices.resize(0);
+		boneIndices.resize(0);
+		weights.resize(0);
+		boneVertices.resize(0);
+		bones.resize(0);
+		inverseBindPose.resize(0);
 	}
 }

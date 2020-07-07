@@ -80,7 +80,7 @@ import dragonBones.geom.Transform;
 	/**
 	 * @private
 	 */
-	private var actions: Vector<ActionData> = new Vector<ActionData>();
+	private var actions: Array<ActionData> = new Array<ActionData>();
 	/**
 	 * @language zh_CN
 	 * 所属的龙骨数据。
@@ -95,10 +95,10 @@ import dragonBones.geom.Transform;
 	
 	private var _boneDirty:Bool;
 	private var _slotDirty:Bool;
-	private var _animationNames:Vector<String> = new Vector<String>();
-	private var _sortedBones:Vector<BoneData> = new Vector<BoneData>();
-	private var _sortedSlots:Vector<SlotData> = new Vector<SlotData>();
-	private var _bonesChildren:Map<String, Vector<BoneData>> = new Map<String, Vector<BoneData>>();
+	private var _animationNames:Array<String> = new Array<String>();
+	private var _sortedBones:Array<BoneData> = new Array<BoneData>();
+	private var _sortedSlots:Array<SlotData> = new Array<SlotData>();
+	private var _bonesChildren:Map<String, Array<BoneData>> = new Map<String, Array<BoneData>>();
 	private var _defaultSkin:SkinData;
 	private var _defaultAnimation:AnimationData;
 	/**
@@ -116,25 +116,21 @@ import dragonBones.geom.Transform;
 		for (k in bones.keys())
 		{
 			bones[k].returnToPool();
-			bones.remove(k);
 		}
 		
 		for (k in slots.keys())
 		{
 			slots[k].returnToPool();
-			slots.remove(k);
 		}
 		
 		for (k in skins.keys())
 		{
 			skins[k].returnToPool();
-			skins.remove(k);
 		}
 		
 		for (k in animations.keys())
 		{
 			animations[k].returnToPool();
-			animations.remove(k);
 		}
 		
 		var l:UInt = actions.length;
@@ -159,19 +155,19 @@ import dragonBones.geom.Transform;
 		aabb.y = 0.0;
 		aabb.width = 0.0;
 		aabb.height = 0.0;
-		//bones.clear();
-		//slots.clear();
-		//skins.clear();
-		//animations.clear();
-		actions.length = 0;
+		bones.clear();
+		slots.clear();
+		skins.clear();
+		animations.clear();
+		actions.resize(0);
 		parent = null;
 		userData = null;
 		
 		_boneDirty = false;
 		_slotDirty = false;
-		_animationNames.length = 0;
-		_sortedBones.length = 0;
-		_sortedSlots.length = 0;
+		_animationNames.resize(0);
+		_sortedBones.resize(0);
+		_sortedSlots.resize(0);
 		_defaultSkin = null;
 		_defaultAnimation = null;
 	}
@@ -184,11 +180,11 @@ import dragonBones.geom.Transform;
 			return;
 		}
 		
-		var sortHelper:Vector<BoneData> = _sortedBones.concat();
+		var sortHelper:Array<BoneData> = _sortedBones.copy();
 		var index:UInt = 0;
 		var count:UInt = 0;
 		
-		_sortedBones.length = 0;
+		_sortedBones.resize(0);
 		var bone:BoneData;
 		
 		while(count < total)
@@ -217,8 +213,7 @@ import dragonBones.geom.Transform;
 			
 			if (bone.ik != null && bone.chain > 0 && bone.chainIndex == bone.chain)
 			{
-				_sortedBones.insertAt(_sortedBones.indexOf(bone.parent) + 1, bone);
-				//_sortedBones.splice(_sortedBones.indexOf(bone.parent) + 1, 0, bone); // ik, parent, bone, children
+				_sortedBones.insert(_sortedBones.indexOf(bone.parent) + 1, bone);
 			}
 			else
 			{
@@ -254,20 +249,19 @@ import dragonBones.geom.Transform;
 	 * @private
 	 */
 	private function setCacheFrame(globalTransformMatrix: Matrix, transform: Transform):Int {
-		var dataArray:Vector<Float> = parent.cachedFrames;
+		var dataArray:Array<Float> = parent.cachedFrames;
 		var arrayOffset:UInt = dataArray.length;
 		
-		dataArray.length += 10;
-		dataArray[arrayOffset] = globalTransformMatrix.a;
-		dataArray[arrayOffset + 1] = globalTransformMatrix.b;
-		dataArray[arrayOffset + 2] = globalTransformMatrix.c;
-		dataArray[arrayOffset + 3] = globalTransformMatrix.d;
-		dataArray[arrayOffset + 4] = globalTransformMatrix.tx;
-		dataArray[arrayOffset + 5] = globalTransformMatrix.ty;
-		dataArray[arrayOffset + 6] = transform.skewX;
-		dataArray[arrayOffset + 7] = transform.skewY;
-		dataArray[arrayOffset + 8] = transform.scaleX;
-		dataArray[arrayOffset + 9] = transform.scaleY;
+		dataArray.push(globalTransformMatrix.a);
+		dataArray.push(globalTransformMatrix.b);
+		dataArray.push(globalTransformMatrix.c);
+		dataArray.push(globalTransformMatrix.d);
+		dataArray.push(globalTransformMatrix.tx);
+		dataArray.push(globalTransformMatrix.ty);
+		dataArray.push(transform.skewX);
+		dataArray.push(transform.skewY);
+		dataArray.push(transform.scaleX);
+		dataArray.push(transform.scaleY);
 		
 		return arrayOffset;
 	}
@@ -275,7 +269,7 @@ import dragonBones.geom.Transform;
 	 * @private
 	 */
 	private function getCacheFrame(globalTransformMatrix: Matrix, transform: Transform, arrayOffset:Int):Void {
-		var dataArray:Vector<Float> = parent.cachedFrames;
+		var dataArray:Array<Float> = parent.cachedFrames;
 		
 		globalTransformMatrix.a = dataArray[arrayOffset];
 		globalTransformMatrix.b = dataArray[arrayOffset + 1];
@@ -305,13 +299,13 @@ import dragonBones.geom.Transform;
 				
 				if (_bonesChildren[parentName] == null)
 				{
-					_bonesChildren[parentName] = new Vector<BoneData>();
+					_bonesChildren[parentName] = new Array<BoneData>();
 				}
 				
 				_bonesChildren[parentName].push(value);
 			}
 			
-			var children:Vector<BoneData> = _bonesChildren[value.name];
+			var children:Array<BoneData> = _bonesChildren[value.name];
 			if (children != null)
 			{
 				var l :UInt= children.length;
@@ -435,16 +429,16 @@ import dragonBones.geom.Transform;
 	 * @see #armatures
 	 * @version DragonBones 3.0
 	 */
-	public var animationNames(get, never):Vector<String>;
-	private function get_animationNames(): Vector<String> 
+	public var animationNames(get, never):Array<String>;
+	private function get_animationNames():Array<String> 
 	{
 		return _animationNames;
 	}
 	/**
 	 * @private
 	 */
-	private var sortedBones(get, never):Vector<BoneData>;
-	private function get_sortedBones():Vector<BoneData>
+	private var sortedBones(get, never):Array<BoneData>;
+	private function get_sortedBones():Array<BoneData>
 	{
 		if (_boneDirty)
 		{
@@ -457,8 +451,8 @@ import dragonBones.geom.Transform;
 	/**
 	 * @private
 	 */
-	private var sortedSlots(get, never):Vector<SlotData>;
-	private function get_sortedSlots():Vector<SlotData>
+	private var sortedSlots(get, never):Array<SlotData>;
+	private function get_sortedSlots():Array<SlotData>
 	{
 		if (_slotDirty)
 		{

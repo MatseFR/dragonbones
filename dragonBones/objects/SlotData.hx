@@ -46,7 +46,7 @@ import dragonBones.enums.BlendMode;
 	/**
 	 * @private
 	 */
-	private var actions: Vector<ActionData> = new Vector<ActionData>();
+	private var actions:Array<ActionData> = new Array<ActionData>();
 	/**
 	 * @language zh_CN
 	 * 所属的父骨骼数据。
@@ -89,7 +89,7 @@ import dragonBones.enums.BlendMode;
 		zOrder = 0;
 		blendMode = BlendMode.None;
 		name = null;
-		actions.length = 0;
+		actions.resize(0);
 		parent = null;
 		color = null;
 		userData = null;

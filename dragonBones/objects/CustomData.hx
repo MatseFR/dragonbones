@@ -16,19 +16,19 @@ import dragonBones.core.BaseObject;
 	 * 自定义整数。
 	 * @version DragonBones 5.0
 	 */
-	public var ints: Vector<Float> = new Vector<Float>();
+	public var ints: Array<Float> = new Array<Float>();
 	/**
 	 * @language zh_CN
 	 * 自定义浮点数。
 	 * @version DragonBones 5.0
 	 */
-	public var floats: Vector<Float> = new Vector<Float>();
+	public var floats: Array<Float> = new Array<Float>();
 	/**
 	 * @language zh_CN
 	 * 自定义字符串。
 	 * @version DragonBones 5.0
 	 */
-	public var strings: Vector<String> = new Vector<String>();
+	public var strings: Array<String> = new Array<String>();
 	/**
 	 * @private
 	 */
@@ -40,9 +40,9 @@ import dragonBones.core.BaseObject;
 	 * @private
 	 */
 	override private function _onClear():Void {
-		ints.length = 0;
-		floats.length = 0;
-		strings.length = 0;
+		ints.resize(0);
+		floats.resize(0);
+		strings.resize(0);
 	}
 	/**
 	 * @language zh_CN

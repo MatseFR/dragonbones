@@ -7,7 +7,7 @@ import openfl.Vector;
  */
 @:allow(dragonBones) @:final class ExtensionFrameData extends TweenFrameData
 {
-	public var tweens:Vector<Float> = new Vector<Float>();
+	public var tweens:Array<Float> = new Array<Float>();
 	
 	@:keep private function new()
 	{
@@ -18,7 +18,6 @@ import openfl.Vector;
 	{
 		super._onClear();
 		
-		tweens.fixed = false;
-		tweens.length = 0;
+		tweens.resize(0);
 	}
 }

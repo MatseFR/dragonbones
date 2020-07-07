@@ -70,14 +70,13 @@ import dragonBones.core.DragonBones;
 		for (k in textures.keys())
 		{
 			textures[k].returnToPool();
-			textures.remove(k);
 		}
 		
 		autoSearch = false;
 		scale = 1.0;
 		width = 0.0;
 		height = 0.0;
-		//textures.clear();
+		textures.clear();
 		name = null;
 		imagePath = null;
 		
@@ -132,8 +131,8 @@ import dragonBones.core.DragonBones;
 		for (k in textures.keys())
 		{
 			textures[k].returnToPool();
-			textures.remove(k);
 		}
+		textures.clear();
 		
 		var texture:TextureData;
 		for (k in value.textures.keys()) 

@@ -41,9 +41,9 @@ import dragonBones.objects.AnimationData;
 	 * @private
 	 */
 	private var _cacheFrameIndex:Int;
-	private var _animationNames:Vector<String> = new Vector<String>();
+	private var _animationNames:Array<String> = new Array<String>();
 	private var _animations:Map<String, AnimationData> = new Map<String, AnimationData>();
-	private var _animationStates:Vector<AnimationState> = new Vector<AnimationState>();
+	private var _animationStates:Array<AnimationState> = new Array<AnimationState>();
 	private var _armature:Armature;
 	private var _lastAnimationState:AnimationState;
 	private var _animationConfig:AnimationConfig;
@@ -70,17 +70,15 @@ import dragonBones.objects.AnimationData;
 			_animationConfig.returnToPool();
 		}
 		
-		_animations = new Map();
-		
 		timeScale = 1.0;
 		
 		_isPlaying = false;
 		_animationStateDirty = false;
 		_timelineStateDirty = false;
 		_cacheFrameIndex = -1;
-		_animationNames.length = 0;
-		//_animations.clear();
-		_animationStates.length = 0;
+		_animationNames.resize(0);
+		_animations.clear();
+		_animationStates.resize(0);
 		_armature = null;
 		_lastAnimationState = null;
 		_animationConfig = null;
@@ -184,7 +182,7 @@ import dragonBones.objects.AnimationData;
 			if (animationState._fadeState > 0 && animationState._subFadeState > 0)
 			{
 				animationState.returnToPool();
-				_animationStates.length = 0;
+				_animationStates.resize(0);
 				_animationStateDirty = true;
 				_lastAnimationState = null;
 			}
@@ -197,7 +195,7 @@ import dragonBones.objects.AnimationData;
 				{
 					_animationStateDirty = false;
 					
-					var bones:Vector<Bone> = _armature.getBones();
+					var bones:Array<Bone> = _armature.getBones();
 					var l:UInt = bones.length;
 					var bone:Bone;
 					for (i in 0...l)
@@ -206,7 +204,7 @@ import dragonBones.objects.AnimationData;
 						bone._cachedFrameIndices = animationData.getBoneCachedFrameIndices(bone.name);
 					}
 					
-					var slots:Vector<Slot> = _armature.getSlots();
+					var slots:Array<Slot> = _armature.getSlots();
 					l = slots.length;
 					var slot:Slot;
 					for (i in 0...l)
@@ -258,7 +256,7 @@ import dragonBones.objects.AnimationData;
 				
 				if (i == animationStateCount - 1 && r > 0)
 				{
-					_animationStates.length = _animationStates.length - r;
+					_animationStates.resize(_animationStates.length - r);
 					
 					if (_lastAnimationState == null && _animationStates.length > 0) 
 					{
@@ -295,7 +293,7 @@ import dragonBones.objects.AnimationData;
 		_timelineStateDirty = false;
 		_cacheFrameIndex = -1;
 		_animationConfig.clear();
-		_animationStates.length = 0;
+		_animationStates.resize(0);
 		_lastAnimationState = null;
 	}
 	/**
@@ -434,7 +432,7 @@ import dragonBones.objects.AnimationData;
 		}
 		
 		// Child armature play same name animation.
-		var slots:Vector<Slot> = _armature.getSlots();
+		var slots:Array<Slot> = _armature.getSlots();
 		var l:UInt = slots.length;
 		var childArmature:Armature;
 		for (i in 0...l)
@@ -782,8 +780,8 @@ import dragonBones.objects.AnimationData;
 	 * @see #animations
 	 * @version DragonBones 4.5
 	 */
-	public var animationNames(get, never):Vector<String>;
-	private function get_animationNames():Vector<String>
+	public var animationNames(get, never):Array<String>;
+	private function get_animationNames():Array<String>
 	{
 		return _animationNames;
 	}
@@ -805,8 +803,8 @@ import dragonBones.objects.AnimationData;
 			return value;
 		}
 		
-		_animationNames.length = 0;
-		_animations = new Map();
+		_animationNames.resize(0);
+		_animations.clear();
 		
 		if (value != null)
 		{

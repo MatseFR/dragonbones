@@ -59,7 +59,7 @@ import dragonBones.objects.TweenFrameData;
 		return (value - progress) * easing + progress;
 	}
 	
-	static function _getCurveEasingValue(progress:Float, samples:Vector<Float>):Float
+	static function _getCurveEasingValue(progress:Float, samples:Array<Float>):Float
 	{
 		if (progress <= 0.0) 
 		{
@@ -80,7 +80,7 @@ import dragonBones.objects.TweenFrameData;
 	
 	private var _tweenProgress:Float;
 	private var _tweenEasing:Float;
-	private var _curve:Vector<Float>;
+	private var _curve:Array<Float>;
 	
 	private function new()
 	{

@@ -285,7 +285,7 @@ import dragonBones.textures.TextureAtlasData;
 	private var _helpTransformA:Transform = new Transform();
 	private var _helpTransformB:Transform = new Transform();
 	private var _helpMatrix:Matrix = new Matrix();
-	private var _rawBones:Vector<BoneData> = new Vector<BoneData>();
+	private var _rawBones:Array<BoneData> = new Array<BoneData>();
 	
 	private var _data:DragonBonesData = null;
 	private var _armature:ArmatureData = null;
@@ -360,8 +360,9 @@ import dragonBones.textures.TextureAtlasData;
 	
 	private function _globalToLocal(armature:ArmatureData):Void // Support 2.x ~ 3.x data.
 	{
-		var keyFrames:Vector<BoneFrameData> = new Vector<BoneFrameData>();
-		var bones:Vector<BoneData> = armature.sortedBones.concat().reverse();
+		var keyFrames:Array<BoneFrameData> = new Array<BoneFrameData>();
+		var bones:Array<BoneData> = armature.sortedBones.copy();// .reverse();
+		bones.reverse();
 		
 		var l:UInt = bones.length;
 		var bone:BoneData, frame:BoneFrameData, timeline:BoneTimelineData, parentTimeline:BoneTimelineData;
@@ -391,7 +392,7 @@ import dragonBones.textures.TextureAtlasData;
 				
 				parentTimeline = bone.parent != null? animation.getBoneTimeline(bone.parent.name): null;
 				_helpTransformB.copyFrom(timeline.originalTransform);
-				keyFrames.length = 0;
+				keyFrames.resize(0);
 				
 				lJ = timeline.frames.length;
 				for (j in 0...lJ)
@@ -437,19 +438,17 @@ import dragonBones.textures.TextureAtlasData;
 		}
 	}
 	
-	private function _mergeFrameToAnimationTimeline(framePositon:Float, actions:Vector<ActionData>, events:Vector<EventData>):Void 
+	private function _mergeFrameToAnimationTimeline(framePositon:Float, actions:Array<ActionData>, events:Array<EventData>):Void 
 	{
 		var frameStart:UInt = Math.floor(framePositon * _armature.frameRate); // uint()
-		var frames:Vector<FrameData> = _animation.frames;
-		
-		frames.fixed = false;
+		var frames:Array<FrameData> = _animation.frames;
 		
 		if (frames.length == 0) {
 			var startFrame:AnimationFrameData = cast BaseObject.borrowObject(AnimationFrameData); // Add start frame.
 			startFrame.position = 0;
 			
 			if (_animation.frameCount > 1) {
-				frames.length = _animation.frameCount + 1; // One more count for zero duration frame.
+				frames.resize(_animation.frameCount + 1); // One more count for zero duration frame.
 				
 				var endFrame:AnimationFrameData = cast BaseObject.borrowObject(AnimationFrameData); // Add end frame to keep animation timeline has two different frames atleast.
 				endFrame.position = _animation.frameCount / _armature.frameRate;
@@ -485,28 +484,20 @@ import dragonBones.textures.TextureAtlasData;
 		
 		if (actions != null) // Merge actions.
 		{
-			insertedFrame.actions.fixed = false;
-			
 			l = actions.length;
 			for (i in 0...l)
 			{
 				insertedFrame.actions.push(actions[i]);
 			}
-			
-			insertedFrame.actions.fixed = true;
 		}
 		
 		if (events != null) // Merge events.
 		{
-			insertedFrame.events.fixed = false;
-			
 			l = events.length;
 			for (i in 0...l)
 			{
 				insertedFrame.events.push(events[i]);
 			}
-			
-			insertedFrame.events.fixed = true;
 		}
 		
 		// Modify frame link and duration.
@@ -541,7 +532,5 @@ import dragonBones.textures.TextureAtlasData;
 		nextFrame = frames[0] != null ? cast frames[0] : null;
 		prevFrame.next = nextFrame;
 		nextFrame.prev = prevFrame;
-		
-		frames.fixed = true;
 	}
 }

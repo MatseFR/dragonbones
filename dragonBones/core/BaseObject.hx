@@ -14,14 +14,14 @@ import openfl.Vector;
 	private static var _hashCode:UInt = 0;
 	private static var _defaultMaxCount:UInt = 5000;
 	private static var _maxCountMap:Dictionary<Class<Dynamic>, Int> = new Dictionary<Class<Dynamic>, Int>();
-	private static var _poolsMap:Dictionary<Class<Dynamic>, Vector<BaseObject>> = new Dictionary<Class<Dynamic>, Vector<BaseObject>>();
+	private static var _poolsMap:Dictionary<Class<Dynamic>, Array<BaseObject>> = new Dictionary<Class<Dynamic>, Array<BaseObject>>();
 	
 	private static function _returnObject(object:BaseObject):Void
 	{
 		//var objectConstructor:Class<Dynamic> = getDefinitionByName(getQualifiedClassName(object));
 		var objectConstructor:Class<Dynamic> = Type.getClass(object);
 		var maxCount:Int = _maxCountMap.exists(objectConstructor) ? _maxCountMap[objectConstructor] : _defaultMaxCount;
-		var pool:Vector<BaseObject>;
+		var pool:Array<BaseObject>;
 		
 		if (_poolsMap.exists(objectConstructor))
 		{
@@ -29,7 +29,7 @@ import openfl.Vector;
 		}
 		else
 		{
-			pool = new Vector<BaseObject>();
+			pool = new Array<BaseObject>();
 			_poolsMap[objectConstructor] = pool;
 		}
 		
@@ -55,7 +55,7 @@ import openfl.Vector;
 	 */
 	public static function setMaxCount(objectConstructor:Class<Dynamic>, maxCount:Int):Void
 	{
-		var pool:Vector<BaseObject>;
+		var pool:Array<BaseObject>;
 		
 		if (objectConstructor != null)
 		{
@@ -66,7 +66,7 @@ import openfl.Vector;
 				pool = _poolsMap[objectConstructor];
 				if (pool.length > maxCount)
 				{
-					pool.length = maxCount;
+					pool.resize(maxCount);
 				}
 			}
 		}
@@ -84,7 +84,7 @@ import openfl.Vector;
 				pool = _poolsMap[classType];
 				if (pool.length > maxCount)
 				{
-					pool.length = maxCount;
+					pool.resize(maxCount);
 				}
 			}
 		}
@@ -101,10 +101,10 @@ import openfl.Vector;
 		{
 			if (_poolsMap.exists(objectConstructor))
 			{
-				var pool:Vector<BaseObject> = _poolsMap[objectConstructor];
+				var pool:Array<BaseObject> = _poolsMap[objectConstructor];
 				if (pool.length > 0)
 				{
-					pool.length = 0;
+					pool.resize(0);
 				}
 			}
 		}
@@ -112,7 +112,7 @@ import openfl.Vector;
 		{
 			for (k in _poolsMap)
 			{
-				_poolsMap[k].length = 0;
+				_poolsMap[k].resize(0);
 			}
 		}
 	}
@@ -123,7 +123,7 @@ import openfl.Vector;
 	 */
 	public static function borrowObject(objectConstructor:Class<Dynamic>):BaseObject
 	{
-		var pool:Vector<BaseObject> = _poolsMap.exists(objectConstructor) ? _poolsMap[objectConstructor] : null;
+		var pool:Array<BaseObject> = _poolsMap.exists(objectConstructor) ? _poolsMap[objectConstructor] : null;
 		if (pool != null && pool.length > 0)
 		{
 			var object = pool.pop();

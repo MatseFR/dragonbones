@@ -26,7 +26,7 @@ import dragonBones.objects.FrameData;
 	{
 		if (_animationState.actionEnabled)
 		{
-			var actions:Vector<ActionData> = cast(frame, AnimationFrameData).actions;
+			var actions:Array<ActionData> = cast(frame, AnimationFrameData).actions;
 			var l:UInt = actions.length;
 			for (i in 0...l)
 			{
@@ -35,7 +35,7 @@ import dragonBones.objects.FrameData;
 		}
 		
 		var eventDispatcher:IEventDispatcher = _armature.eventDispatcher;
-		var events:Vector<EventData> = cast(frame, AnimationFrameData).events;
+		var events:Array<EventData> = cast(frame, AnimationFrameData).events;
 		var l = events.length;
 		var eventData:EventData, eventType:String, eventObject:EventObject;
 		for (i in 0...l)

@@ -162,7 +162,7 @@ import dragonBones.textures.TextureData;
 		}
 		
 		_armature = armature;
-		_rawBones.length = 0;
+		_rawBones.resize(0);
 		
 		if (Reflect.hasField(rawData, DataParser.BONE))
 		{
@@ -219,7 +219,7 @@ import dragonBones.textures.TextureData;
 		}
 		
 		_armature = null;
-		_rawBones.length = 0;
+		_rawBones.resize(0);
 		
 		return armature;
 	}
@@ -369,7 +369,7 @@ import dragonBones.textures.TextureData;
 		if (Reflect.hasField(rawData, DataParser.DISPLAY))
 		{
 			var displayObjectSet:Array<Dynamic> = Reflect.field(rawData, DataParser.DISPLAY);
-			var displayDataSet:Vector<DisplayData> = slotDisplayDataSet.displays;
+			var displayDataSet:Array<DisplayData> = slotDisplayDataSet.displays;
 			
 			_skinSlotData = slotDisplayDataSet;
 			
@@ -377,8 +377,6 @@ import dragonBones.textures.TextureData;
 			{
 				displayDataSet.push(_parseDisplay(displayObject));
 			}
-			
-			displayDataSet.fixed = true;
 			
 			_skinSlotData = null;
 		}
@@ -477,8 +475,7 @@ import dragonBones.textures.TextureData;
 				if (Reflect.hasField(rawData, DataParser.VERTICES)) 
 				{
 					var rawVertices:Array<Dynamic> = Reflect.field(rawData, DataParser.VERTICES);
-					boundingBox.vertices.length = rawVertices.length;
-					boundingBox.vertices.fixed = true;
+					boundingBox.vertices.resize(rawVertices.length);
 					
 					var i:UInt = 0;
 					var l:UInt = boundingBox.vertices.length;
@@ -541,28 +538,23 @@ import dragonBones.textures.TextureData;
 		var numVertices:UInt = Std.int(rawVertices.length / 2);
 		var numTriangles:UInt = Std.int(rawTriangles.length / 3);
 		
-		var inverseBindPose:Vector<Matrix> = new Vector<Matrix>(_armature.sortedBones.length, true);
+		var inverseBindPose:Array<Matrix> = new Array<Matrix>();
+		inverseBindPose.resize(_armature.sortedBones.length);
 		
 		mesh.skinned = Reflect.hasField(rawData, DataParser.WEIGHTS)&& cast(Reflect.field(rawData, DataParser.WEIGHTS), Array<Dynamic>).length > 0;
 		mesh.name = _getString(rawData, DataParser.NAME, null);
-		mesh.uvs.length = numVertices * 2;
-		mesh.uvs.fixed = true;
-		mesh.vertices.length = numVertices * 2;
-		mesh.vertices.fixed = true;
-		mesh.vertexIndices.length = numTriangles * 3;
-		mesh.vertexIndices.fixed = true;
+		mesh.uvs.resize(numVertices * 2);
+		mesh.vertices.resize(numVertices * 2);
+		mesh.vertexIndices.resize(numTriangles * 3);
 		
 		var l:UInt = 0;
 		var i:UInt = 0;
 		
 		if (mesh.skinned)
 		{
-			mesh.boneIndices.length = numVertices;
-			mesh.boneIndices.fixed = true;
-			mesh.weights.length = numVertices;
-			mesh.weights.fixed = true;
-			mesh.boneVertices.length = numVertices;
-			mesh.boneVertices.fixed = true;
+			mesh.boneIndices.resize(numVertices);
+			mesh.weights.resize(numVertices);
+			mesh.boneVertices.resize(numVertices);
 			
 			if (Reflect.hasField(rawData, DataParser.SLOT_POSE))
 			{
@@ -602,7 +594,7 @@ import dragonBones.textures.TextureData;
 		i = 0;
 		l = rawVertices.length;
 		var iN:UInt, vertexIndex:UInt, x:Float, y:Float, rawWeights:Array<Dynamic>, numBones:UInt;
-		var indices:Vector<UInt>, weights:Vector<Float>, boneVertices:Vector<Float>, iI:UInt;
+		var indices:Array<UInt>, weights:Array<Float>, boneVertices:Array<Float>, iI:UInt;
 		var rawBoneIndex:UInt, boneData:BoneData, boneIndex:Int;
 		while (i < l)
 		{
@@ -618,9 +610,12 @@ import dragonBones.textures.TextureData;
 			{
 				rawWeights = Reflect.field(rawData, DataParser.WEIGHTS);
 				numBones = rawWeights[iW];
-				indices = mesh.boneIndices[vertexIndex] = new Vector<UInt>(numBones, true);
-				weights = mesh.weights[vertexIndex] = new Vector<Float>(numBones, true);
-				boneVertices = mesh.boneVertices[vertexIndex] = new Vector<Float>(numBones * 2, true);
+				indices = mesh.boneIndices[vertexIndex] = new Array<UInt>();
+				indices.resize(numBones);
+				weights = mesh.weights[vertexIndex] = new Array<Float>();
+				weights.resize(numBones);
+				boneVertices = mesh.boneVertices[vertexIndex] = new Array<Float>();
+				boneVertices.resize(numBones * 2);
 				
 				Transform.transformPoint(mesh.slotPose, x, y, _helpPoint);
 				x = mesh.vertices[i] = _helpPoint.x;
@@ -649,16 +644,9 @@ import dragonBones.textures.TextureData;
 				}
 				
 				iW += numBones * 2 + 1;
-				
-				indices.fixed = true;
-				weights.fixed = true;
-				boneVertices.fixed = true;
 			}
 			i += 2;
 		}
-		
-		mesh.bones.fixed = true;
-		mesh.inverseBindPose.fixed = true;
 		
 		l = rawTriangles.length;
 		for (i in 0...l)
@@ -750,9 +738,7 @@ import dragonBones.textures.TextureData;
 				var boneTimeline:BoneTimelineData = cast BaseObject.borrowObject(BoneTimelineData);
 				var boneFrame:BoneFrameData = cast BaseObject.borrowObject(BoneFrameData);
 				boneTimeline.bone = bone;
-				boneTimeline.frames.fixed = false;
 				boneTimeline.frames[0] = boneFrame;
-				boneTimeline.frames.fixed = true;
 				animation.addBoneTimeline(boneTimeline);
 			}
 		}
@@ -784,9 +770,7 @@ import dragonBones.textures.TextureData;
 					slotFrame.color.blueOffset = slot.color.blueOffset;
 				}
 				
-				slotTimeline.frames.fixed = false;
 				slotTimeline.frames[0] = slotFrame;
-				slotTimeline.frames.fixed = true;
 				animation.addSlotTimeline(slotTimeline);
 				
 				if (_isOldData) // Support 2.x ~ 3.x data.
@@ -931,9 +915,10 @@ import dragonBones.textures.TextureData;
 		var zOrder:Array<Dynamic> = cast(Reflect.field(rawData, DataParser.Z_ORDER), Array<Dynamic>);
 		if (zOrder != null && zOrder.length > 0) {
 			var slotCount:Int = _armature.sortedSlots.length;
-			var unchanged:Vector<Int> = new Vector<Int>(Std.int(slotCount - zOrder.length / 2));
+			var unchanged:Array<Int> = new Array<Int>();
+			unchanged.resize(Std.int(slotCount - zOrder.length / 2));
 			
-			frame.zOrder.length = slotCount;
+			frame.zOrder.resize(slotCount);
 			var l:Int = slotCount;
 			for (i in 0...l) {
 				frame.zOrder[i] = -1;
@@ -1004,8 +989,8 @@ import dragonBones.textures.TextureData;
 		}
 		
 		var bone:BoneData = cast(_timeline, BoneTimelineData).bone;
-		var actions:Vector<ActionData> = new Vector<ActionData>();
-		var events:Vector<EventData> = new Vector<EventData>();
+		var actions:Array<ActionData> = new Array<ActionData>();
+		var events:Array<EventData> = new Array<EventData>();
 		
 		if (Reflect.hasField(rawData, DataParser.ACTION) || Reflect.hasField(rawData, DataParser.ACTIONS))
 		{
@@ -1056,7 +1041,7 @@ import dragonBones.textures.TextureData;
 		else if (Reflect.hasField(rawData, DataParser.ACTION) || Reflect.hasField(rawData, DataParser.ACTIONS))
 		{
 			var slot:SlotData = cast(_timeline, SlotTimelineData).slot;
-			var actions:Vector<ActionData> = new Vector<ActionData>();
+			var actions:Array<ActionData> = new Array<ActionData>();
 			_parseActionData(rawData, actions, slot.parent, slot);
 			
 			_mergeFrameToAnimationTimeline(frame.position, actions, null); // Merge actions and events to animation timeline.
@@ -1081,7 +1066,7 @@ import dragonBones.textures.TextureData;
 		var y:Float = 0.0;
 		var i:Int = 0;
 		var l:Int = mesh.vertices.length;
-		var boneIndices:Vector<UInt>, lB:UInt, boneIndex:UInt;
+		var boneIndices:Array<UInt>, lB:UInt, boneIndex:UInt;
 		while (i < l)
 		{
 			if (rawVertices == null || i < offset || i - offset >= rawVertices.length)
@@ -1119,8 +1104,6 @@ import dragonBones.textures.TextureData;
 			i += 2;
 		}
 		
-		frame.tweens.fixed = true;
-		
 		return frame;
 	}
 	/**
@@ -1152,7 +1135,8 @@ import dragonBones.textures.TextureData;
 			
 			if (Reflect.hasField(rawData, DataParser.CURVE))
 			{
-				frame.curve = new Vector<Float>(frameCount * 2 - 1, true);
+				frame.curve = new Array<Float>();
+				frame.curve.resize(frameCount * 2 - 1);
 				TweenFrameData.samplingEasingCurve(Reflect.field(rawData, DataParser.CURVE), frame.curve);
 			}
 		}
@@ -1185,12 +1169,12 @@ import dragonBones.textures.TextureData;
 			var rawFrames:Array<Dynamic> = Reflect.field(rawData, DataParser.FRAME);
 			if (rawFrames.length == 1)
 			{
-				timeline.frames.length = 1;
+				timeline.frames.resize(1);
 				timeline.frames[0] = frameParser(rawFrames[0], 0, _getFloat(rawFrames[0], DataParser.DURATION, 1));
 			}
 			else if (rawFrames.length > 1)
 			{
-				timeline.frames.length = _animation.frameCount + 1;
+				timeline.frames.resize(_animation.frameCount + 1);
 				
 				var frameStart:Int = 0;
 				var frameCount:Int = 0;
@@ -1243,8 +1227,6 @@ import dragonBones.textures.TextureData;
 					}
 				}
 			}
-			
-			timeline.frames.fixed = true;
 		}
 		
 		_timeline = null;
@@ -1252,7 +1234,7 @@ import dragonBones.textures.TextureData;
 	/**
 	 * @private
 	 */
-	private function _parseActionData(rawData:Dynamic, actions:Vector<ActionData>, bone:BoneData, slot:SlotData):Void
+	private function _parseActionData(rawData:Dynamic, actions:Array<ActionData>, bone:BoneData, slot:SlotData):Void
 	{
 		var actionData:ActionData;
 		
@@ -1322,7 +1304,7 @@ import dragonBones.textures.TextureData;
 	/**
 	 * @private
 	 */
-	private function _parseEventData(rawData:Dynamic, events:Vector<EventData>, bone:BoneData, slot:SlotData):Void
+	private function _parseEventData(rawData:Dynamic, events:Array<EventData>, bone:BoneData, slot:SlotData):Void
 	{
 		var eventData:EventData;
 		

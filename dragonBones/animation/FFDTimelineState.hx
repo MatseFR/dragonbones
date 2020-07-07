@@ -19,9 +19,9 @@ import dragonBones.objects.TimelineData;
 	
 	private var _ffdDirty:Bool;
 	private var _tweenFFD:Int;
-	private var _ffdVertices:Vector<Float> = new Vector<Float>();
-	private var _durationFFDVertices:Vector<Float> = new Vector<Float>();
-	private var _slotFFDVertices:Vector<Float>;
+	private var _ffdVertices:Array<Float> = new Array<Float>();
+	private var _durationFFDVertices:Array<Float> = new Array<Float>();
+	private var _slotFFDVertices:Array<Float>;
 	
 	@:keep private function new()
 	{
@@ -36,10 +36,8 @@ import dragonBones.objects.TimelineData;
 		
 		_ffdDirty = false;
 		_tweenFFD = TweenTimelineState.TWEEN_TYPE_NONE;
-		_ffdVertices.fixed = false;
-		_durationFFDVertices.fixed = false;
-		_ffdVertices.length = 0;
-		_durationFFDVertices.length = 0;
+		_ffdVertices.resize(0);
+		_durationFFDVertices.resize(0);
 		_slotFFDVertices = null;
 	}
 	
@@ -61,8 +59,8 @@ import dragonBones.objects.TimelineData;
 		
 		if (_tweenEasing != DragonBones.NO_TWEEN || _curve != null)
 		{
-			var currentFFDVertices:Vector<Float> = currentFrame.tweens;
-			var nextFFDVertices:Vector<Float> = cast(currentFrame.next, ExtensionFrameData).tweens;
+			var currentFFDVertices:Array<Float> = currentFrame.tweens;
+			var nextFFDVertices:Array<Float> = cast(currentFrame.next, ExtensionFrameData).tweens;
 			var l:UInt = currentFFDVertices.length;
 			var duration:Float;
 			for (i in 0...l)
@@ -105,7 +103,7 @@ import dragonBones.objects.TimelineData;
 				tweenProgress = _tweenProgress;
 			}
 			
-			var currentFFDVertices:Vector<Float> = cast(_currentFrame, ExtensionFrameData).tweens;
+			var currentFFDVertices:Array<Float> = cast(_currentFrame, ExtensionFrameData).tweens;
 			var l:UInt = currentFFDVertices.length;
 			for (i in 0...l)
 			{
@@ -122,18 +120,13 @@ import dragonBones.objects.TimelineData;
 		
 		_slotFFDVertices = slot._ffdVertices;
 		
-		_ffdVertices.length = cast(_timelineData.frames[0], ExtensionFrameData).tweens.length;
-		_durationFFDVertices.length = _ffdVertices.length;
-		_ffdVertices.fixed = true;
-		_durationFFDVertices.fixed = true;
-		
-		var l:UInt = _ffdVertices.length;
+		var l:UInt = cast(_timelineData.frames[0], ExtensionFrameData).tweens.length;
 		for (i in 0...l)
 		{
-			_ffdVertices[i] = 0.0;
+			_ffdVertices.push(0.0);
 		}
 		
-		l = _durationFFDVertices.length;
+		l = _ffdVertices.length;
 		for (i in 0...l)
 		{
 			_durationFFDVertices[i] = 0.0;

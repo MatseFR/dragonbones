@@ -22,11 +22,10 @@ import dragonBones.core.BaseObject;
 		for (k in slots.keys())
 		{
 			slots[k].returnToPool();
-			slots.remove(k);
 		}
 		
 		name = null;
-		//slots.clear();
+		slots.clear();
 	}
 	
 	public function addSlot(value:SkinSlotData):Void

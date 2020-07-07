@@ -7,7 +7,7 @@ import openfl.Vector;
  */
 @:allow(dragonBones) @:final class ZOrderFrameData extends FrameData
 {
-	public var zOrder:Vector<Int> = new Vector<Int>();
+	public var zOrder:Array<Int> = new Array<Int>();
 	
 	@:keep private function new()
 	{
@@ -18,6 +18,6 @@ import openfl.Vector;
 	{
 		super._onClear();
 		
-		zOrder.length = 0;
+		zOrder.resize(0);
 	}
 }
