@@ -1,7 +1,6 @@
 ﻿package dragonBones.starling;
 
 import openfl.display.BitmapData;
-import openfl.Vector;
 import openfl.utils.Object;
 
 import dragonBones.Armature;

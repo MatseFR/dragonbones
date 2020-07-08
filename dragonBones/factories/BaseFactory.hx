@@ -819,7 +819,7 @@ import dragonBones.textures.TextureData;
 	
 	private var _delay:Timer;
 	//private var _delayID:UInt = 0;
-	private var _decodeDataList:Vector<DecodedData> = new Vector<DecodedData>();
+	private var _decodeDataList:Array<DecodedData> = new Array<DecodedData>();
 	private function _loadTextureAtlasHandler(event:Event):Void
 	{
 		var loaderInfo:LoaderInfo = cast(event.target, LoaderInfo);

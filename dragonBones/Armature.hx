@@ -4,7 +4,6 @@ import haxe.Constraints;
 
 import openfl.errors.Error;
 import openfl.geom.Point;
-import openfl.Vector;
 
 import dragonBones.animation.Animation;
 import dragonBones.animation.IAnimateble;

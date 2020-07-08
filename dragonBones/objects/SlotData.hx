@@ -1,7 +1,6 @@
 package dragonBones.objects;
 
 import openfl.geom.ColorTransform;
-import openfl.Vector;
 
 import dragonBones.core.BaseObject;
 import dragonBones.enums.BlendMode;

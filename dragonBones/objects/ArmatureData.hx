@@ -3,7 +3,6 @@ package dragonBones.objects;
 import openfl.errors.ArgumentError;
 import openfl.geom.Matrix;
 import openfl.geom.Rectangle;
-import openfl.Vector;
 
 import dragonBones.core.BaseObject;
 import dragonBones.enums.ArmatureType;

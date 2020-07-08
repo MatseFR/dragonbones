@@ -1,7 +1,6 @@
 ﻿package dragonBones;
 
 import openfl.geom.Matrix;
-import openfl.Vector;
 
 import dragonBones.core.TransformObject;
 import dragonBones.geom.Transform;

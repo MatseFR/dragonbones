@@ -1,6 +1,4 @@
 package dragonBones.objects;
-
-import openfl.Vector;
 	
 import dragonBones.core.BaseObject;
 

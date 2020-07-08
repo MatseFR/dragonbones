@@ -2,7 +2,6 @@
 
 import openfl.errors.Error;
 import openfl.utils.Dictionary;
-import openfl.Vector;
 
 /**
  * @language zh_CN

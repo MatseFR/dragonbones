@@ -1,7 +1,5 @@
 ﻿package dragonBones.animation;
 
-import openfl.Vector;
-
 import dragonBones.core.BaseObject;
 import dragonBones.enums.EventType;
 import dragonBones.events.EventObject;

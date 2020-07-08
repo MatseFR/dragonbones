@@ -1,7 +1,6 @@
 ﻿package dragonBones.animation;
 
 import openfl.errors.ArgumentError;
-import openfl.Vector;
 
 import dragonBones.Armature;
 import dragonBones.Bone;

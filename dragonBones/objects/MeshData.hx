@@ -1,7 +1,6 @@
 package dragonBones.objects;
 
 import openfl.geom.Matrix;
-import openfl.Vector;
 
 import dragonBones.core.BaseObject;
 

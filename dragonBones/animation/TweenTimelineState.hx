@@ -1,6 +1,4 @@
 package dragonBones.animation;
-
-import openfl.Vector;
 	
 import dragonBones.core.DragonBones;
 import dragonBones.objects.TweenFrameData;

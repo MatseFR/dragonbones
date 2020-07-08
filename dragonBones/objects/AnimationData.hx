@@ -1,7 +1,6 @@
 ﻿package dragonBones.objects;
 
 import openfl.errors.ArgumentError;
-import openfl.Vector;
 	
 /**
  * @language zh_CN
@@ -67,11 +66,11 @@ import openfl.Vector;
 	/**
 	 * @private
 	 */
-	private var boneCachedFrameIndices:Map<String, Array<Int>> = new Map<String, Array<Int>>(); //Object<Vector<Float>>
+	private var boneCachedFrameIndices:Map<String, Array<Int>> = new Map<String, Array<Int>>();
 	/**
 	 * @private
 	 */
-	private var slotCachedFrameIndices:Map<String, Array<Int>> = new Map<String, Array<Int>>(); //Object<Vector<Float>>
+	private var slotCachedFrameIndices:Map<String, Array<Int>> = new Map<String, Array<Int>>();
 	/**
 	 * @private
 	 */

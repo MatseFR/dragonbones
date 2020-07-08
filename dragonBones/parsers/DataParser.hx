@@ -3,7 +3,6 @@
 import openfl.errors.Error;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
-import openfl.Vector;
 
 import dragonBones.animation.TweenTimelineState;
 import dragonBones.core.BaseObject;
@@ -41,13 +40,13 @@ import dragonBones.textures.TextureAtlasData;
 	private static inline var DATA_VERSION_4_5:String = "4.5";
 	private static inline var DATA_VERSION_5_0:String = "5.0";
 	private static inline var DATA_VERSION:String = DATA_VERSION_5_0;
-	private static var DATA_VERSIONS:Vector<String> = Vector.ofArray([
+	private static var DATA_VERSIONS:Array<String> = [
 		DATA_VERSION_5_0,
 		DATA_VERSION_4_5,
 		DATA_VERSION_4_0,
 		DATA_VERSION_3_0,
 		DATA_VERSION_2_3
-	]);
+	];
 	
 	private static inline var TEXTURE_ATLAS:String = "TextureAtlas";
 	private static inline var SUB_TEXTURE:String = "SubTexture";

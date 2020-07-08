@@ -1,7 +1,6 @@
 ﻿package dragonBones.starling;
 
 import openfl.geom.Matrix;
-import openfl.Vector;
 
 import dragonBones.Slot;
 import dragonBones.core.BaseObject;

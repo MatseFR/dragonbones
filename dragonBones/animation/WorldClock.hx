@@ -1,7 +1,6 @@
 ﻿package dragonBones.animation;
 
 import openfl.Lib;
-import openfl.Vector;
 	
 import dragonBones.core.DragonBones;
 

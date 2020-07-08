@@ -1,7 +1,5 @@
 ﻿package dragonBones.animation;
 
-import openfl.Vector;
-
 import dragonBones.Armature;
 import dragonBones.Bone;
 import dragonBones.Slot;

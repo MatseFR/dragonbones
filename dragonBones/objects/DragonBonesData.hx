@@ -1,7 +1,6 @@
 package dragonBones.objects;
 
 import openfl.errors.ArgumentError;
-import openfl.Vector;
 	
 import dragonBones.core.BaseObject;
 
