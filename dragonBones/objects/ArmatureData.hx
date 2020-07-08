@@ -138,8 +138,6 @@ import dragonBones.geom.Transform;
 			actions[i].returnToPool();
 		}
 		
-		_bonesChildren = new Map();
-		
 		if (userData != null) 
 		{
 			userData.returnToPool();
@@ -167,6 +165,7 @@ import dragonBones.geom.Transform;
 		_animationNames.resize(0);
 		_sortedBones.resize(0);
 		_sortedSlots.resize(0);
+		_bonesChildren.clear();
 		_defaultSkin = null;
 		_defaultAnimation = null;
 	}

@@ -494,6 +494,10 @@ import dragonBones.objects.SlotTimelineData;
 			_ffdTimelines.splice(_ffdTimelines.indexOf(ffdTimelineState), 1);
 			ffdTimelineState.returnToPool();
 		}
+		
+		boneTimelineStates.clear();
+		slotTimelineStates.clear();
+		ffdTimelineStates.clear();
 	}
 	/**
 	 * @private

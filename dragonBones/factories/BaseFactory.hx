@@ -254,6 +254,8 @@ import dragonBones.textures.TextureData;
 				slot._setDisplayIndex(slotData.displayIndex);
 			}
 		}
+		
+		slotDisplayDataSetMap.clear();
 	}
 	/**
 	 * @private
